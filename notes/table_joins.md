@@ -12,6 +12,8 @@ Geralmente a cardinalidade é 1:1
 
 O LEFT JOIN retorna TODAS as linhas da tabela da ESQUERDA e SOMENTE as linhas correspondentes da tabela da DIREITA. Se nenhuma linha correspondente for encontrada na tabela da direita, o valor NULO é usado para indicar a falta de correspondência.
 
+É a mesma coisa eu fazer o left join e tirar fora as linhas que tem nulo e eu fazer o inner join.
+
 Geralmente a cardinalidade é 1:N
 
 ### RIGHT JOIN
