@@ -41,6 +41,52 @@ SELECT o.order_id,
 FROM orders o LEFT JOIN order_payments op ON (o.order_id = op.order_id)
 WHERE o.order_id = 'e481f51cbdc54678b7cc49136f2d6af7'
 
+/* 3. Quantos pedidos tem mais de 5 items distintos? */
+SELECT
+	o.order_id,
+	COUNT(DISTINCT oi.product_id) AS items
+FROM orders o LEFT JOIN order_items oi ON (o.order_id = oi.order_id)
+GROUP BY o.order_id 
+HAVING items > 5
+
+/* 4. Qual a cardinalidade entre a tabela Pedidos ( orders ) e Avaliações (
+reviews )? */
+SELECT
+	o.order_id, 
+	COUNT(DISTINCT or2.review_id) AS num_reviews
+FROM orders o LEFT JOIN order_reviews or2 ON (o.order_id = or2.order_id)
+GROUP BY o.order_id
+HAVING num_reviews > 1
+
+/* A cardinalidade é de 1:N pois existe mais de uma avaliação por pedido */
+
+/* 5. Quantos pedidos (orders) não tem nenhuma avaliação (review) ? */
+SELECT
+	o.order_id,
+	COUNT(or2.review_id)
+FROM orders o LEFT JOIN order_reviews or2 ON (o.order_id = or2.order_id)
+GROUP BY o.order_id
+HAVING COUNT(or2.review_id) = 0
+
+/* 6. Quais são os top 10 vendedores com mais clientes? */
+SELECT
+	s.seller_id,
+	COUNT(DISTINCT c.customer_id) AS clientes
+FROM orders o LEFT JOIN order_items oi ON (o.order_id = oi.order_id)
+			  LEFT JOIN sellers s	   ON (oi.seller_id = s.seller_id)
+			  LEFT JOIN customer c     ON (c.customer_id = o.customer_id)
+GROUP BY oi.seller_id 
+ORDER BY clientes DESC
+LIMIT 10;
+
+/* 7. Quantos pedidos (orders) não possuem nenhum produto (products) ? */
+SELECT
+	COUNT(DISTINCT o.order_id)
+FROM orders o LEFT JOIN order_items oi ON (o.order_id = oi.order_id)
+WHERE oi.product_id IS NULL
+
+
+
 
 
 
